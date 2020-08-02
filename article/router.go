@@ -6,7 +6,7 @@ func AddRouter(router *gin.Engine) {
 	appRouter := router.Group("/article")
 	{
 		appRouter.GET("/", listArticles)
-		appRouter.POST("/", createArticle)
+		appRouter.POST("/", CreateArticle)
 		appRouter.PATCH("/:id", updateArticle)
 		appRouter.DELETE("/:id", deleteArticle)
 		appRouter.GET("/:id", getArticle)

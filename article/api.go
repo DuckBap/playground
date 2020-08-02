@@ -4,6 +4,7 @@ import (
 	"GoBoard/database"
 	"GoBoard/database/models"
 	"github.com/gin-gonic/gin"
+	"net/http"
 	"strconv"
 )
 
@@ -12,14 +13,13 @@ type Comment models.Comment
 
 var db = database.DB
 
-func createArticle(c *gin.Context) {
-	title := c.PostForm("title")
-	body := c.PostForm("body")
-	userId, _ := strconv.Atoi(c.PostForm("userId"))
-
-	article := Article{Title: title, Body: body, UserID: uint(userId)}
+func CreateArticle(c *gin.Context) {
+	var article Article
+	c.Bind(&article)
+	user, _ := c.Get("user")
+	article.UserID = user.(*models.User).ID
 	db.Create(&article)
-	c.JSON(200, article)
+	c.JSON(http.StatusOK, article)
 }
 
 func getArticle(c *gin.Context) {
